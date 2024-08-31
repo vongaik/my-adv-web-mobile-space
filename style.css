@@ -1,0 +1,26 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+html, body{
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background-color: #f5f2f8e7;
+}
+
+main {
+  margin: auto;
+  width: 50%;
+  padding: 20px;
+}
+
+main > h1 {
+  text-align: auto;
+  font-size: 3.5em;
+}
+
+header {
+  display: none;
+}
+  
