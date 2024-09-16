@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Details</title>
+    <style>
+      .container {
+        display: flex;
+        justify-content: space-between;
+        max-width: 900px;
+        margin: 20px auto;
+        gap: 20px;
+      }
+      .column {
+        width: 48%;
+        border: 1.5px solid #ccc;
+        background-color: burlywood;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+      .book-info img {
+        max-width: 100%;
+        height: auto;
+      }
+      img {
+        display: block;
+        max-width: 300px;
+        margin: 0 auto 20px auto;
+      }
+      h1 {
+        padding: 10px;
+        text-align: center;
+      }
+      h2, h3 {
+        margin-bottom: 10px;
+      }
+      p {
+        margin-bottom: 15px;
+      }
+      /* Responsive adjustment for wider screens */
+      @media (min-width: 1200px) {
+        .column {
+          width: 45%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav>
+      <ul class="navbar">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="milestone1.html">milestone 1</a></li>
+        <li><a href="milestone2.html">milestone 2</a></li>
+        <li><a href="milestone3.html">milestone 3</a></li>
+        <li><a href="milestone4.html">milestone 4</a></li>
+      </ul>
+    </nav>
+
+    <h1>Google Books: Book Information</h1>
+
+    <div class="container">
+      <div class="column book-info">
+        <!-- Left Column -->
+        <h2 id="title"></h2>
+        <h3 id="subtitle"></h3>
+        <p><strong>Authors:</strong> <span id="authors"></span></p>
+        <p><strong>Publisher:</strong> <span id="publisher"></span></p>
+        <p><strong>Published Date:</strong> <span id="publishedDate"></span></p>
+        <p><strong>ISBN:</strong> <span id="isbn"></span></p>
+        <p><strong>Page Count:</strong> <span id="pageCount"></span></p>
+        <p><strong>Categories:</strong> <span id="categories"></span></p>
+      </div>
+
+      <div class="column">
+        <!-- Right Column -->
+        <img id="thumbnail" alt="Book cover" />
+        <p id="description"></p>
+        <p><a href="#" id="previewLink" target="_blank">Preview Book</a></p>
+        <p><a href="#" id="webReaderLink" target="_blank">Read Online</a></p>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        // Load JSON file 
+        $.getJSON("google-books-book.json", function (bookData) {
+          $("#title").text(bookData.volumeInfo.title);
+          $("#subtitle").text(bookData.volumeInfo.subtitle);
+          $("#authors").text(bookData.volumeInfo.authors.join(", "));
+          $("#publisher").text(bookData.volumeInfo.publisher);
+          $("#publishedDate").text(bookData.volumeInfo.publishedDate);
+          $("#isbn").text(
+            bookData.volumeInfo.industryIdentifiers
+              .map((id) => id.identifier)
+              .join(", ")
+          );
+          $("#pageCount").text(bookData.volumeInfo.pageCount);
+          $("#categories").text(bookData.volumeInfo.categories.join(", "));
+
+          // Use .html() to properly bring out HTML tags in the description in the JSON
+          $("#description").html(bookData.volumeInfo.description);
+          
+          $("#thumbnail").attr("src", bookData.volumeInfo.imageLinks.thumbnail);
+          $("#previewLink").attr("href", bookData.volumeInfo.previewLink);
+          $("#webReaderLink").attr("href", bookData.accessInfo.webReaderLink);
+        });
+      });
+    </script>
+    <footer id="footer">
+      <p>&copy; 2024 Vongai Kwenda</p>
+    </footer>
+  </body>
+</html>

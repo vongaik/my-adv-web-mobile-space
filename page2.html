@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Information</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Basic styling */
+
+        img {
+            max-width: 200px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="navi">    
+        <nav>
+        <ul class="navbar">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="milestone1.html">milestone 1</a></li>
+          <li><a href="milestone2.html">milestone 2</a></li>
+          <li><a href="milestone3.html">milestone 3</a></li>
+          <li><a href="milestone4.html">milestone 4</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div style="padding:20px;">
+    <h1 id="book-name"></h1>
+    <h2 id="book-subtitle"></h2>
+    <p id="book-authors"></p>
+    <p id="book-publish-date"></p>
+    <p id="book-publish-places"></p>
+    <img id="book-cover" alt="Book Cover">
+    <p id="book-publishers"></p>
+    <p id="book-isbn"></p>
+    <p id="book-url">Find out more: </p>
+    <hr>
+    <h3>Table of Contents</h3>
+    <ul id="book-toc"></ul> 
+    </div>
+
+
+    <script>
+        $(document).ready(function() {
+            // JSON data
+            const bookData = {
+                "ISBN:1593274874": {
+                    "publishers": [
+                        {
+                            "name": "No Starch Press"
+                        }
+                    ],
+                    "pagination": "xiv, 243 p.",
+                    "table_of_contents": [
+                        {"title": "Introduction"},
+                        {"title": "The web platform"},
+                        {"title": "Structure and semantics"},
+                        {"title": "Device-responsive CSS"},
+                        {"title": "New approaches to CSS layouts"},
+                        {"title": "Modern JavaScript"},
+                        {"title": "Device APIs"},
+                        {"title": "Images and graphics"},
+                        {"title": "New forms"},
+                        {"title": "Multimedia"},
+                        {"title": "Web apps"},
+                        {"title": "The future"},
+                        {"title": "Appendixes."},
+                        {"title": "Browser support as of March 2013"},
+                        {"title": "Further reading"}
+                    ],
+                    "title": "The Modern Web",
+                    "url": "https://openlibrary.org/books/OL25427547M/The_Modern_Web",
+                    "identifiers": {
+                        "isbn_13": ["9781593274870"],
+                        "openlibrary": ["OL25427547M"],
+                        "isbn_10": ["1593274874"]
+                    },
+                    "cover": {
+                        "small": "https://covers.openlibrary.org/b/id/7257680-S.jpg",
+                        "large": "https://covers.openlibrary.org/b/id/7257680-L.jpg",
+                        "medium": "https://covers.openlibrary.org/b/id/7257680-M.jpg"
+                    },
+                    "publish_date": "2013",
+                    "key": "/books/OL25427547M",
+                    "authors": [
+                        {
+                            "url": "https://openlibrary.org/authors/OL6940720A/Peter_Gasston",
+                            "name": "Peter Gasston"
+                        }
+                    ],
+                    "subtitle": "multi-device Web development with HTML5, CSS3, and JavaScript",
+                    "publish_places": [
+                        {
+                            "name": "San Francisco, CA"
+                        }
+                    ]
+                }
+            };
+
+            // get book data
+            const book = bookData["ISBN:1593274874"];
+
+            // Put book data into html
+            $('#book-name').append(`${book.title}: `);
+            $('#book-subtitle').append(`<em>${book.subtitle}</em>`);
+            $('#book-authors').html('Author: ' + book.authors.map(author => `<a href="${author.url}" target="_blank" style="color: blue;">${author.name}</a>`).join(', '));
+            $('#book-publish-date').text('Published: ' + book.publish_date);
+            $('#book-publish-places').text('Published in: ' + book.publish_places.map(place => place.name).join(', '));
+            $('#book-cover').attr('src', book.cover.medium);
+            $('#book-publishers').text('Publisher: ' + book.publishers.map(publisher => publisher.name).join(', '));
+            $('#book-isbn').text('ISBN: ' + book.identifiers.isbn_10.join(', '));
+            $('#book-url').html('<a href="' + book.url + '" target="_blank">Find out more</a>');
+            
+            // Populate table of contents
+            book.table_of_contents.forEach(item => {
+                $('#book-toc').append(`<li>${item.title}</li>`);
+            });
+        });
+    </script>
+    <footer id="footer">
+        <p> &copy; 2024 Vongai Kwenda </p>
+    </footer>
+</body>
+</html>

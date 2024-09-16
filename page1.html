@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+    <style>
+        /* some simple styling */
+        .book { margin: 10px 0; padding: 10px; border: 1px solid #ccc; background-color: burlywood;}
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <nav>
+        <ul class="navbar">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="milestone1.html">milestone 1</a></li>
+          <li><a href="milestone2.html">milestone 2</a></li>
+          <li><a href="milestone3.html">milestone 3</a></li>
+          <li><a href="milestone4.html">milestone 4</a></li>
+        </ul>
+      </nav>
+    <!-- Section to display the list of books -->
+    <h1>Open Library Books</h1>
+    <div id="books-list"></div>
+
+    <!-- JavaScript/jQuery code to fetch and display the JSON data -->
+    <script>
+        // function for a list of books
+        function displayBooks(books) {
+            let bookList = ''; // clear previous content
+            books.forEach(book => {
+                bookList += `<div class="book">
+                            <h3>${book.title}</h3>
+                            <p>Author: ${book.author_name ? book.author_name.join(', ') : 'Unknown'}</p>
+                            <p>Published: ${book.publish_date}</p>
+                            <p>Published Place: ${book.publish_place ? book.publish_place.join(', ') : 'Not Stated'}</p>
+                            <p>ISBN: ${book.isbn[0]}</p>
+                            <p>Publisher: ${book.publisher.join(', ')}</p>
+                            <p>Edition: ${book.edition_count}</p>
+                          </div>`;
+            });
+            document.getElementById('books-list').innerHTML = bookList;
+        }
+
+        // Fetch the JSON file and display the list of books
+        fetch('openlibrary-search.json')  
+            .then(response => response.json())
+            .then(data => displayBooks(data.docs));  // Access the "docs" array in the JSON to display books
+    </script>
+    <footer id="footer">
+        <p> &copy; 2024 Vongai Kwenda </p>
+    </footer>
+</body>
+</html>

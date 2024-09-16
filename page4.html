@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Books Search List</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      /* some simple styling */
+      .book {
+        margin: 10px 0;
+        padding: 10px;
+        border: 1.5px solid #ccc;
+        background-color: burlywood;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <ul class="navbar">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="milestone1.html">milestone 1</a></li>
+        <li><a href="milestone2.html">milestone 2</a></li>
+        <li><a href="milestone3.html">milestone 3</a></li>
+        <li><a href="milestone4.html">milestone 4</a></li>
+      </ul>
+    </nav>
+    <h1>Google Books Search List</h1>
+    <div id="book-list"></div>
+
+    <script>
+      $(document).ready(function () {
+        $.getJSON("google-books-search.json", function (books) {
+          // Iterate through each item in the items array
+          books.items.forEach(function (book) {
+            var bookInfo = book.volumeInfo; // Access volumeInfo object for book details
+
+            // Get the HTML for each book
+            var bookHtml = `<div class="book">
+                <h2>${bookInfo.title}</h2>
+                <h3>${bookInfo.subtitle || ""}</h3>
+                <p>By ${bookInfo.authors.join(", ")}</p>
+                <p>Published: ${bookInfo.publishedDate} <br>Publisher: ${
+              bookInfo.publisher
+            }</p>
+                <p>${bookInfo.description || "No description available"}</p>
+                <img src="${
+                  bookInfo.imageLinks
+                    ? bookInfo.imageLinks.thumbnail
+                    : "no-image.jpg"
+                }" alt="${bookInfo.title}" />
+                <p>ISBN: ${
+                  bookInfo.industryIdentifiers
+                    ? bookInfo.industryIdentifiers[0].identifier
+                    : "No ISBN available"
+                }</p>
+            </div>`;
+
+            // Append the constructed HTML to the book-list div
+            $("#book-list").append(bookHtml);
+          });
+        });
+      });
+    </script>
+    <footer id="footer">
+      <p>&copy; 2024 Vongai Kwenda</p>
+    </footer>
+  </body>
+</html>
