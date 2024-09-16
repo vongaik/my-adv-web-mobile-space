@@ -12,7 +12,8 @@
     padding: 0;
     background-color: #f0f0f0;
   }
-  
+
+
   main {
     margin: auto;
     width: 50%;
@@ -24,12 +25,15 @@
     font-size: 3.5em;
   }
   
-  header, footer {
+footer {
     display: center;
-    background-color: #ffffff; /* White for a clean look */
-    padding: 40px;  
+    background-color: #333; /* White for a clean look */
+    padding: 40px;
     text-align: center;
   }
+footer > p {
+  color: white;
+}
 
   .highlight {
     color: #ff6f61; /* Coral color for emphasis on text, applied in HTML*/
@@ -45,10 +49,6 @@ img {
     height: auto; /* Preserve aspect ratio */
 }
 
-video {
-    max-width: 100%;
-    height: auto; /* Preserve aspect ratio */
-}
 
 /* ------hero section styles------ */
 /* .hero h1 {
@@ -61,7 +61,15 @@ video {
   height: 800px; /* Height of the hero section */
   background: url('DSCN5199.JPG') no-repeat center center;
   background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  /* overflow: hidden; */
 }
+
+
 .hero-overlay {
   position: absolute;
   top: 0;
@@ -100,6 +108,7 @@ nav {
   display: flex; /* align horizontally*/
   overflow: hidden;
   justify-content: flex-end; /* Aligns the items to the right */
+  background-color: whitesmoke;
 }
 
 .navbar li a {
@@ -123,6 +132,16 @@ nav {
 .icons {
   display: flex; /* Align icons horizontally */
   gap: 20px; /* Space between icons */
+  z-index: 3; /* Ensure icons are on top */
+}
+
+/*for linkedIn image*/
+.icons .fa-linkedin:hover {
+  color: rgb(255, 255, 0); /* Change color on hover */
+}
+/* For SVG image */
+.icons .handshake-image:hover {
+  filter: brightness(0) saturate(100%) invert(99%) sepia(96%) saturate(7471%) hue-rotate(73deg) brightness(92%) contrast(92%);
 }
 
 .hero-overlay i, .handshake-image {
@@ -167,21 +186,9 @@ nav {
 /* -------------------basic query for mobile devices--------------*/
 @media (max-width: 768px) {
     .hero {
-        height: 250px; /* Adjust hero section height */
+      height: 100vh; /* Adjust hero section height */
         font-size: 1.5rem;
     }
-    
-    .button {
-        padding: 10px 20px; /* Adjust button padding */
-        font-size: 0.9rem;
-    }
-    
-    .container {
-        padding: 10px; /* Adjust container padding */
-    }
+  
 }
-
-/*---------------------flexbox for layouts---------*/
-
-
 
