@@ -40,7 +40,7 @@
   }
   
   .navbar li a:hover {
-    background-color: #e1b382;
+    background-color: #a280894f;
   }
   img {
     display: block; /* Makes the image a block element */
@@ -111,7 +111,7 @@
 .back-button {
     display: inline-block;
     padding: 10px 20px; /* button fatness*/
-    background-color: #e1b382; /* Button color */
+    background-color: #a28089; /* Button color */
     color: white; /* Text color */
     text-decoration: none; /* Remove underline */
     border-radius: 5px; /* Rounded corners */
@@ -133,21 +133,21 @@
     font-weight: bold;
     text-decoration: none;
     color: white;
-    background-color: #e1b382; /* Button color */
+    background-color: #a28089; /* Button color */
     border-radius: 36px; /* Rounded corners */
     transition: background-color 0.3s ease; /* Smooth hover transition */
 }
 
 .button:hover {
-    background-color: #a87f52; /* Darker on hover */
+    background-color: #775e65; /* Darker on hover */
 }
 
 
 footer {
     padding: 120px 0;
-    background-color: #e1b382; /* Sand Tan from hookagency.com */
+    background-color: #a28089; /* Sand Tan from hookagency.com */
     margin-top: 80px;
-    color: #12343b; /* dark teal */
+    color: whitesmoke; /* dark teal */
     text-align: center;
-    font-size: 18px; /* Slightly larger text for readability */
+    font-size: 15px; /* Slightly larger text for readability */
 }
