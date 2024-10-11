@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style3.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milestone 3 - AJAX Google Books Search</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <style>
+        .searchbooklistitem {
+            cursor: pointer;
+            margin: 5px;
+        }
+        .bookshelfbooklistitem {
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        /* Styling pagination buttons */
+        .pagination {
+            margin: 20px 0;
+        }
+
+        .pagination button {
+            margin: 0 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .pagination button:hover {
+    background-color: #d4c8cb4f;
+        }
+
+        .active-page {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .inactive-page {
+            background-color: rgb(255, 255, 255);
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            let currentPage = 1; // Keep track of the current page
+            const resultsPerPage = 10;
+            let searchTerm = "";
+
+            // When search is clicked
+            $("#btnSearch").click(function() {
+                searchTerm = $("#searchTerm").val();
+                searchBooks(1); // Start on page 1
+            });
+
+            // Search books with pagination
+            function searchBooks(pageNumber) {
+                currentPage = pageNumber;
+                let startIndex = (pageNumber - 1) * resultsPerPage; // Calculate starting index for the API
+                let url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&startIndex=${startIndex}&maxResults=10`; // Limit to 10 results
+                $("#booklist").html("Searching ...<img src='https://vignette.wikia.nocookie.net/wikiality/images/7/70/ProgressBar.gif/revision/latest?cb=20070406024457'>");
+
+                $.getJSON(url, function(json) {
+                    let booksHTML = "";
+                    for (let i in json.items) {
+                        booksHTML += `<img class='searchbooklistitem' data-bookid='${json.items[i].id}' `; // Use distinct class for search results
+                        booksHTML += `src='${json.items[i].volumeInfo.imageLinks?.smallThumbnail || "default.jpg"}' height='100'>`;
+                    }
+                    $("#booklist").html(booksHTML);
+
+                    // Register click event for each book item in search results
+                    $(".searchbooklistitem").on('click', function() {
+                        getBookDetails($(this).attr("data-bookid"), "#bookdetails"); // Display details in the designated area
+                    });
+
+                    // Update pagination buttons
+                    updatePaginationButtons(5); // Hard code the 5 pages
+                })
+                .fail(function(jqxhr, status, errorMessage) {
+                    $("#booklist").html("Status Code: " + status + "<br>Error Message: " + errorMessage);
+                });
+            }
+
+            // Display book details for search when a book is clicked
+            function getBookDetails(bookid, detailDiv) {
+                $(detailDiv).html("Loading details...");
+                $.getJSON(`https://www.googleapis.com/books/v1/volumes/${bookid}`, function(json) {
+                    let bookHTML = `<h3>${json.volumeInfo.title}</h3>`;
+                    bookHTML += `<img src='${json.volumeInfo.imageLinks?.smallThumbnail || "default.jpg"}'>`;
+                    bookHTML += `<p>${json.volumeInfo.description || "No description available."}</p>`; 
+                    $(detailDiv).html(bookHTML);
+                });
+            }
+
+            // Create pagination buttons
+            function updatePaginationButtons(totalPages) {
+                let paginationHTML = "";
+                for (let i = 1; i <= totalPages; i++) {
+                    paginationHTML += `<button class='pagination-btn ${i === currentPage ? "active-page" : "inactive-page"}' data-page='${i}'>${i}</button>`;
+                }
+                $(".pagination").html(paginationHTML);
+
+                // Register click event for pagination buttons
+                $(".pagination-btn").on('click', function() {
+                    let pageNumber = $(this).data("page");
+                    searchBooks(pageNumber);
+                });
+            }
+
+            // Load books from my public bookshelf
+            function loadBookshelf() {
+                const bookshelfId = "1001"; // my bookshelf ID
+                const userId = "104765581359909210723"; // my user ID
+                const url = `https://www.googleapis.com/books/v1/users/${userId}/bookshelves/${bookshelfId}/volumes`;
+
+                $.getJSON(url, function(json) {
+                    let bookshelfHTML = "";
+                    for (let i in json.items) {
+                        bookshelfHTML += `<img class='bookshelfbooklistitem' data-bookid='${json.items[i].id}' `; // Use distinct class for bookshelf items
+                        bookshelfHTML += `src='${json.items[i].volumeInfo.imageLinks?.thumbnail || json.items[i].volumeInfo.imageLinks?.smallThumbnail || "https://via.placeholder.com/150"}' height='100'>`;
+                    }
+                    $("#bookshelf").html(bookshelfHTML);
+
+                    // Register click event for each book item in bookshelf
+                    $(".bookshelfbooklistitem").on('click', function() {
+                        getBookDetails($(this).attr("data-bookid"), "#bookdetails2"); // Show book details for bookshelf
+                    });
+                })
+                .fail(function(jqxhr, status, errorMessage) {
+                    $("#bookshelf").html("Status Code: " + status + "<br>Error Message: " + errorMessage);
+                });
+            }
+
+            // Call loadBookshelf when the page is ready
+            $(document).ready(function() {
+                loadBookshelf(); // Load the bookshelf items when the document is ready
+            });
+        });
+    </script>
+</head>
+<body>
+    <nav>
+        <ul class="navbar">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="milestone1.html">milestone 1</a></li>
+          <li><a href="milestone2.html">milestone 2</a></li>
+          <li><a href="milestone3.html">milestone 3</a></li>
+          <li><a href="milestone4.html">milestone 4</a></li>
+        </ul>
+    </nav>
+
+    <div class="pageContent">
+
+        <div id="MyBookshelf">
+            <h1>My Public Bookshelf</h1>
+            <div id="bookshelf"></div> <!-- Books from my public bookshelf - row -->
+            <div id="bookdetails2" style="width: 50%; padding:10px"></div> <!-- Details for bookshelf books -->
+            <br>
+        </div>  
+
+        <div id="header">
+            <h1>Book search using Google Books API</h1>
+            <input type="text" id="searchTerm" value=" " /> <!-- search box -->
+            <input type="button" id="btnSearch" value="Search" /> <!-- search button -->
+        </div>
+
+        <div id="maincontent">
+            <div id="booklist"></div> <!-- strip of books listed in row -->
+            <div class="pagination"></div> <!-- Pagination buttons will go here -->
+            <div id="bookdetails" style="width: 50%; padding:10px"></div> <!-- Details for search books -->
+        </div>
+
+    </div>
+    <div>
+        <footer>&copy; 2024 Vongai Kwenda</footer>
+      </div>
+</body>
+</html>
+
+
+

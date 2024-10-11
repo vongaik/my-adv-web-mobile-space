@@ -1,0 +1,98 @@
+* {
+    font-family: 'Lato', sans-serif; /* Clean and modern look */
+    color: #4A4A4A; /* Dark grey text color */
+}
+/* Body Styles */
+body {
+    background-color: #F0E9E2; /* Soft cream background */
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+.pageContent {
+    padding: 20px;
+    min-height: calc(100vh - 100px); /* Adjust this value based on my footer height */
+}
+
+
+
+
+/* Bookshelf Section */
+#MyBookshelf {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #b92b2b; /* red background for books */
+    border-radius: 8px; /* Rounded corners for bookshelf div */
+    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
+}
+#MyBookshelf h1 {
+    color: white
+}
+
+#maincontent {
+    /* background-color: white; */
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Book List Styles */
+#bookshelf {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.navbar {
+    list-style: none; /* remove browser presets i think*/
+    padding: 20px;
+    margin: 0;
+    top: 0;
+    display: flex; /* align horizontally*/
+    overflow: hidden;
+    justify-content: flex-end; /* Aligns the items to the right */
+    color: #a28089;;
+  }
+  
+  .navbar li a {
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: rgb(104, 8, 8);
+  }
+  
+  .navbar a {
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .navbar li a:hover {
+    background-color: #b43a5a4f;
+  }
+
+/* Book Details Styles */
+#bookdetails2 {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #FFFFFF; /* White background for details */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Pagination Styles */
+.pagination {
+    margin: 20px 0;
+    text-align: center; /* Center pagination */
+}
+
+
+footer {
+    padding: 120px 0;
+    background-color: #740101;
+    margin-top: 80px;
+    color: whitesmoke; 
+    text-align: center;
+    font-size: 15px; /* Slightly larger text for readability */
+}
+
