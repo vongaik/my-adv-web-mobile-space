@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style4.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milestone 4 - Mustache</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.0/mustache.min.js"></script>
+
+    <!-- ----------------MUSTACHE - bookshelf items -------------- -->
+    <script id="bookshelf-template" type="text/template">
+		{{#items}}
+		<div class='bookshelfbooklistitem' data-bookid="{{id}}">
+            <div class="booklistitemheader2" data-bookid="{{id}}">
+			    <img src='{{volumeInfo.imageLinks.smallThumbnail}}'  width=50 />
+            </div>
+			<div class='bookdetails2' style='display:none'></div>
+		</div>
+		{{/items}}
+	</script>
+
+    <!------------- MUSTACHE - SEARCH RESULTS  ------------------>
+    <script id="booklisttemplate" class="grid-view" type="text/template">
+		{{#items}}
+		<div class='booklistitem' data-bookid="{{id}}">
+			<div class="booklistitemheader" data-bookid="{{id}}">
+				<img src='{{volumeInfo.imageLinks.smallThumbnail}}'  width=50 /> {{volumeInfo.title}}
+			</div>
+			<div class='bookdetails' style='display:none'></div>
+		</div>
+		{{/items}}
+	</script>
+
+    <!------------- MUSTACHE - INDIVIDUAL SEARCH BOOK INFO  ------------------>
+    <script id="bookdetailstemplate" type="text/template">
+        <h2>{{volumeInfo.title}}</h2>
+        <img src='{{volumeInfo.imageLinks.thumbnail}}' style="float: left"/>
+        <div style="margin-left: 220px"> <br> By {{volumeInfo.authors}} - {{volumeInfo.publishedDate}}
+            <h4>Description</h4>
+            <div>{{{volumeInfo.description}}}</div>
+            <p><a href='{{volumeInfo.infoLink}}' target='_blank'>More Information on Google</a></p>
+        </div>
+        <div style="clear:both"></div>
+    </script>
+
+    <!------------- MUSTACHE - INDIVIDUAL BOOKSHELF BOOK INFO  ------------------>
+    <script type="text/template" id="book-details-template">
+        <!-- Template for displaying book details -->
+        <h2>{{volumeInfo.title}}</h2>
+        <div > 
+            <h4> By {{volumeInfo.authors}} - {{volumeInfo.publishedDate}} </h4>
+            <img src='{{volumeInfo.imageLinks.smallThumbnail}}'/>
+            <div>{{#volumeInfo.description}}{{{volumeInfo.description}}}{{/volumeInfo.description}}{{^volumeInfo.description}}No description available{{/volumeInfo.description}}</div>
+        </div>
+        <div style="clear:both"></div>
+    </script>
+
+    <style>
+
+        /* ------------------new --------------- */
+        /* Container for books */
+#booklisttemplate {
+    display: flex;
+    flex-wrap: wrap; /* Flex for grid; adaptable to list */
+    gap: 1rem; /* Space between items */
+    padding: 1rem;
+}
+
+/* Book item (common styles for both views) */
+.booklistitem {
+    background-color: #ffffff;
+    padding: 1rem;
+    box-sizing: border-box;
+    transition: all 0.3s ease; /* Smooth transitions for layout */
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 12px rgba(0,0,0,0.1);
+    margin: 3px;
+}
+
+/* Grid View */
+.grid-view .booklistitem {
+    width: calc(33.333% - 1rem); /* 3 items per row */
+}
+
+/* List View */
+.list-view .booklistitem {
+    width: 100%; /* Full width */
+}
+
+/* Book details (inline expansion) */
+.bookdetails {
+    display: none; /* Initially hidden */
+    background: #45e7e738;
+    padding: 1rem;
+    border-top: 1px solid #ccc;
+    box-sizing: border-box;
+    
+}
+
+        /* --------------end of new ------------------------ */
+
+        #searchBookList {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1%;
+        } 
+
+        /* pointer when hover over these book items */
+        .booklistitemheader {
+        cursor: pointer;
+      }
+
+      .bookshelfbooklistitem {
+            cursor: pointer;
+            margin: 5px;
+            padding: 1rem;
+            box-sizing: border-box;
+            background-color:#14102c75;
+            box-shadow: 0 2px 10px #00000062;
+        }
+
+        /* -------------bookshelf------------------- */
+        /* Controls for layout toggle */
+    #bookshelf-controls {
+        margin-bottom: 1rem;
+    }
+
+#bookshelf-controls button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: lightgray;
+    border: none;
+    border-radius: 4px;
+}
+
+#bookshelf-controls button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Grid View */
+.grid-view .bookshelfbooklistitem {
+    width: 300px;
+}
+
+/* List View */
+.list-view .bookshelfbooklistitem {
+    width: 100%;
+
+}
+
+.list-view .bookshelfbooklistitem img {
+    width: 50px;
+}
+
+    /* Inline Expansion */
+.bookdetails2  {
+    display: none; /* Initially hidden */
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-top: 10px;
+    border-top: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+        /* Styling pagination buttons */
+        .pagination {
+            margin: 20px 0;
+        }
+
+        .pagination button {
+            margin: 0 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .pagination button:hover {
+    background-color: #d6a51f;
+        }
+
+        .active-page {
+            background-color: #08012e;
+            color: rgb(255, 255, 255);
+        }
+
+        .inactive-page {
+            background-color: rgb(255, 255, 255);
+        }
+    </style>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            let currentPage = 1; // Keep track of the current page
+            const resultsPerPage = 10;
+            let searchTerm = "";
+
+            // Call loadBookshelf when the page is ready
+            $(document).ready(function() {
+                loadBookshelf(); // Load the bookshelf items when the document is ready
+            });
+
+            // When search is clicked
+            $("#btnSearch").click(function() {
+                searchTerm = $("#searchTerm").val();
+                searchBooks(1); // Start on page 1
+            });
+
+            // Search books with pagination
+            //------------- MUSTACHE - SEARCH RESULTS  ------------------//
+
+            function searchBooks(pageNumber) {
+                currentPage = pageNumber;
+                let startIndex = (pageNumber - 1) * resultsPerPage; // Calculate starting index for the API
+                let url = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&startIndex=${startIndex}&maxResults=10`; // Limit to 10 results
+                $("#searchBookList").html("Searching ...<img src='https://vignette.wikia.nocookie.net/wikiality/images/7/70/ProgressBar.gif/revision/latest?cb=20070406024457'>");
+         
+            //we can use AJAX here because this service provider allows cross origin request
+        
+            $.getJSON(url, function (json) {
+                var template = $('#booklisttemplate').html();
+                var html = Mustache.render(template, json);
+                $("#searchBookList").html(html);  // Render in the new ID and right container
+                
+                // Register click event for each book item in search results
+                $(".booklistitemheader").on('click', function () { 
+                    div = $(this).next(); // get the book details div, which is immediately following the header div. #NEXT try adding 'var' in front
+                    getBookDetails(json, $(this).attr("data-bookid"), div); 
+                });
+
+                // Update pagination buttons
+                updatePaginationButtons(5); // Hard code the 5 pages
+            });
+        }
+
+            //------------- MUSTACHE - INDIVIDUAL SEARCH BOOK INFORMATION  ------------------//
+            // Display book details for search when a book is clicked
+            function getBookDetails(searchResults, bookid, div) {
+                // Better to issue another AJAX requet
+                var template = $('#bookdetailstemplate').html();
+
+                // Find the matching book details
+                $.each(searchResults.items, function (index, book) {
+                    if (book.id == bookid) {
+                        var html = Mustache.render(template, searchResults.items[index]);
+                        $(div).html(html); // Inject the rendered details into the div
+                        
+                        // Smooth toggle to show/hide details
+                        if ($(div).is(':visible')) {
+                            $(div).slideUp(); // Collapse if already visible
+                        } else {
+                            // Hide all other expanded sections (optional)
+                            $('.bookdetails').slideUp();
+
+                            // Show the current section
+                            $(div).slideDown();
+                        }
+                    }
+                });
+            }
+
+            // Create pagination buttons
+            function updatePaginationButtons(totalPages) {
+                let paginationHTML = "";
+                for (let i = 1; i <= totalPages; i++) {
+                    paginationHTML += `<button class='pagination-btn ${i === currentPage ? "active-page" : "inactive-page"}' data-page='${i}'>${i}</button>`;
+                }
+                $(".pagination").html(paginationHTML);
+
+                // Register click event for pagination buttons
+                $(".pagination-btn").on('click', function() {
+                    let pageNumber = $(this).data("page");
+                    searchBooks(pageNumber);
+                });
+            }
+            
+            // Load books from my public bookshelf
+function loadBookshelf() {
+    const bookshelfId = "1001"; // my bookshelf ID
+    const userId = "104765581359909210723"; // my user ID
+    const url = `https://www.googleapis.com/books/v1/users/${userId}/bookshelves/${bookshelfId}/volumes`;
+
+    // Mustache - Render bookshelf items
+    $.getJSON(url, function(json) {
+        var template = $('#bookshelf-template').html(); // Bookshelf template
+        var bookshelfHTML = Mustache.render(template, json);
+        $("#bookshelf").html(bookshelfHTML);
+
+        // Register click event for each book item in the bookshelf
+        $(".booklistitemheader2").on('click', function() {
+            var div = $(this).next(); // Get the book details div immediately following the header
+            let bookId = $(this).attr("data-bookid");
+
+            // Load and toggle book details
+            loadBookshelfBookDetails(bookId, div);
+        });
+
+    });
+}
+
+    // Load and toggle book details for bookshelf
+    function loadBookshelfBookDetails(bookId, detailsDiv) {
+        const url = `https://www.googleapis.com/books/v1/volumes/${bookId}`;
+
+        // Fetch the book details
+        $.getJSON(url, function(bookData) {
+            let bookDetailsTemplate = $('#book-details-template').html();
+            let bookDetailsHTML = Mustache.render(bookDetailsTemplate, bookData);
+
+            // Inject book details into the targeted div
+            detailsDiv.html(bookDetailsHTML);
+
+            // Toggle visibility of the details section
+            if (detailsDiv.is(':visible')) {
+                detailsDiv.slideUp(); // Collapse if already visible
+            } else {
+                // Hide other expanded sections (optional)
+                $('.bookdetails').slideUp();
+
+                // Show the current section
+                detailsDiv.slideDown();
+            }
+        });
+    }
+
+
+
+});
+        
+        // GRID/LIST LAYOUT TOGGLE AND INLINE EXPANSION FOR BOOK SEARCH
+
+        $(document).ready(function () {
+        // Toggle between grid and list views
+        $('#toggle-grid').click(function () {
+            $('#searchBookList').removeClass('list-view').addClass('grid-view');
+        });
+
+        $('#toggle-list').click(function () {
+            $('#searchBookList').removeClass('grid-view').addClass('list-view');
+        });
+
+        // Toggle search book details inline expansion
+        $('.booklistitem').click(function () {
+            var details = $(this).find('.bookdetails');
+
+            // Hide all other book details
+            $('.bookdetails').not(details).slideUp();
+
+            // Toggle current book details
+            details.slideToggle();
+        });
+    });
+
+    // GRID/LIST LAYOUT TOGGLE AND INLINE EXPANSION FOR BOOKSHELF
+    $(document).ready(function () {
+        // Toggle between grid and list views
+        $('#toggle-bookshelf-grid').click(function () {
+            $('#bookshelf').removeClass('list-view').addClass('grid-view');
+        });
+
+        $('#toggle-bookshelf-list').click(function () {
+            $('#bookshelf').removeClass('grid-view').addClass('list-view');
+        });
+
+        // Inline expansion for bookshelf items
+        $('.bookshelfbooklistitem').click(function () {
+            var details = $(this).find('.bookdetails2');
+
+            // Hide all other open details
+            $('.bookdetails2').not(details).slideUp();
+
+            // Toggle the clicked book's details
+            details.slideToggle();
+        });
+    });
+
+
+    </script>
+</head>
+<body>
+    <nav>
+        <ul class="navbar">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="milestone1.html">milestone 1</a></li>
+          <li><a href="milestone2.html">milestone 2</a></li>
+          <li><a href="milestone3.html">milestone 3</a></li>
+          <li><a href="milestone4.html">milestone 4</a></li>
+        </ul>
+    </nav>
+
+    <div class="mainPage">
+
+        <!-- BOOKSHELF -->
+        <div id="booklist" class="grid-view">
+            <h1>My Public Bookshelf</h1>
+            <div id="bookshelf"></div> <!-- Books from my public bookshelf - row -->
+            <div id="bookshelf-details"></div> <!-- Details for bookshelf books -->
+            <br>
+        <br>
+        </div> 
+        <!-- Layout Toggle Buttons FOR BOOKSHELF -->
+        <div id="bookshelf-controls">
+            <button id="toggle-bookshelf-grid">Grid View</button>
+            <button id="toggle-bookshelf-list">List View</button>
+        </div> 
+        
+
+        <div id="header">
+            <h1>Book search using Google Books API</h1>
+            <input type="text" id="searchTerm" value=" " /> <!-- search box -->
+            <input type="button" id="btnSearch" value="Search" /> <!-- search button -->
+        </div>
+        <br>
+        <!-- BUTTONS instead of links for grid list layout switch -->
+        <div>
+            <button id="toggle-grid">Grid View</button>
+            <button id="toggle-list">List View</button>
+        </div>
+
+        <!-- BOOK SEARCH RESULTS -->
+        <div id="searchResultsContainer" class="grid-view">
+            <div id="searchBookList"></div> <!-- Unique ID for search results list -->
+            <div id="bookdetails"></div> <!-- Details for search books" -->
+            <div class="pagination"></div> <!-- Pagination buttons will go here -->
+        </div>
+
+        
+
+    </div>
+    <div>
+        <footer>&copy; 2024 Vongai Kwenda </footer>
+      </div>
+</body>
+</html>

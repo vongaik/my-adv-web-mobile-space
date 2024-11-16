@@ -1,0 +1,99 @@
+* {
+    font-family: 'Lato', sans-serif; /* Clean and modern look */
+    color: #383838; /* Dark grey text color */
+}
+/* Body Styles */
+body {
+    background-color: white; 
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+.mainPage {
+    padding: 20px;
+    min-height: calc(180vh - 100px); /* Adjust this value based on my footer height */
+}
+
+
+
+
+/* now this just functions as separation banner */
+#booklist {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white; /* remember: #e3e8fc */
+    border-radius: 8px; /* Rounded corners for bookshelf div */
+    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
+}
+#booklist h1 {
+    color: #383838
+}
+
+#maincontent {
+    /* background-color: white; */
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Book List Styles */
+#bookshelf {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.navbar {
+    list-style: none; /* remove browser presets i think*/
+    padding: 20px;
+    margin: 0;
+    top: 0;
+    display: flex; /* align horizontally*/
+    overflow: hidden;
+    justify-content: flex-end; /* Aligns the items to the right */
+    /* color: #1722c5; */
+    background-color: whitesmoke;
+  }
+  
+  .navbar li a {
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: #383838;
+  }
+  
+  .navbar a {
+    text-decoration: none;
+    /* font-weight: bold; */
+  }
+  
+  .navbar li a:hover {
+    background-color: #0847a5;
+    color: whitesmoke
+  }
+
+/* Book Details Styles */
+/* #bookshelf-details {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #FFFFFF; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+} */
+
+/* Pagination Styles */
+.pagination {
+    margin: 20px 0;
+    text-align: center; /* Center pagination */
+}
+
+
+footer {
+    padding: 180px 0;
+    background-color: #08012e;
+    margin-top: 80px;
+    color: whitesmoke; 
+    text-align: center;
+    font-size: 15px; /* Slightly larger text for readability */
+}
